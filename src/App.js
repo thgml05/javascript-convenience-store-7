@@ -1,3 +1,4 @@
+import InputView from './io/InputView.js';
 import OutputView from './io/OutputView.js';
 import StockManager from './stock-manager/StockManager.js';
 
@@ -7,6 +8,7 @@ class App {
     await stockManager.loadProducts();
 
     OutputView.printProducts(stockManager.products);
+    let items = await InputView.readItems();
   }
 }
 
