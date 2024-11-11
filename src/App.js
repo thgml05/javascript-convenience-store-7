@@ -3,6 +3,7 @@ import InputView from './io/InputView.js';
 import OutputView from './io/OutputView.js';
 import StockManager from './stock-manager/StockManager.js';
 import PromotionManager from './promotion-manager/PromotionManager.js';
+import PaymentCalculator from './payment-calculator.js/PaymentCalculator.js';
 
 class App {
   async run() {
@@ -17,7 +18,15 @@ class App {
       stockManager,
       promotionManager
     );
-    console.log(items);
+
+    const paymentCalculator = new PaymentCalculator(items);
+
+    let membershipDiscount = 0;
+    if (await Membership.isMembership()) {
+      membershipDiscount = Membership.getDiscountAmount(
+        normalProductTotalPrice
+      );
+    }
   }
 
   async getStockManager() {

@@ -69,19 +69,19 @@ const InputView = {
     }
   },
 
-  // async askMembership() {
-  //   while (true) {
-  //     try {
-  //       let answer = await MissionUtils.Console.readLineAsync(
-  //         `\n멤버십 할인을 받으시겠습니까? (Y/N)\n`
-  //       );
-  //       this.isAnswerValidate(answer);
-  //       return answer;
-  //     } catch (error) {
-  //       MissionUtils.Console.print(error.message);
-  //     }
-  //   }
-  // },
+  async askMembership() {
+    while (true) {
+      try {
+        let answer = await MissionUtils.Console.readLineAsync(
+          `\n멤버십 할인을 받으시겠습니까? (Y/N)\n`
+        );
+        this.isAnswerValidate(answer);
+        return answer;
+      } catch (error) {
+        MissionUtils.Console.print(error.message);
+      }
+    }
+  },
 
   isAnswerValidate(answer) {
     if (!ANSWER_REGEX.test(answer))
