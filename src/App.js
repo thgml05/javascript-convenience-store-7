@@ -4,28 +4,49 @@ import OutputView from './io/OutputView.js';
 import StockManager from './stock-manager/StockManager.js';
 import PromotionManager from './promotion-manager/PromotionManager.js';
 import PaymentCalculator from './payment-calculator.js/PaymentCalculator.js';
+import Membership from './membership/Membership.js';
+import Receipt from './receipt/Receipt.js';
 
 class App {
   async run() {
     const stockManager = await this.getStockManager();
     const promotionManager = await this.getPromotionManager(stockManager);
+    while (true) {
+      OutputView.printProducts(stockManager.products);
+      let items = await this.requestItems(stockManager);
 
-    OutputView.printProducts(stockManager.products);
-    let items = await this.requestItems(stockManager);
-
-    items = await this.getPromotionCheckedItems(
-      items,
-      stockManager,
-      promotionManager
-    );
-
-    const paymentCalculator = new PaymentCalculator(items);
-
-    let membershipDiscount = 0;
-    if (await Membership.isMembership()) {
-      membershipDiscount = Membership.getDiscountAmount(
-        normalProductTotalPrice
+      items = await this.getPromotionCheckedItems(
+        items,
+        stockManager,
+        promotionManager
       );
+
+      const realQuantity = PaymentCalculator.getRealQuantity(items);
+      const promotionDiscount = PaymentCalculator.getPromotionDiscount(items);
+      const beforeTotalPrice =
+        PaymentCalculator.getBeforePromotionTotalPrice(items);
+      const normalProductTotalPrice =
+        PaymentCalculator.getNormalProductTotalPrice(items);
+
+      let membershipDiscount = 0;
+      if (await Membership.isMembership()) {
+        membershipDiscount = Membership.getDiscountAmount(
+          normalProductTotalPrice
+        );
+      }
+
+      Receipt.printReceipt(
+        items,
+        realQuantity,
+        promotionDiscount,
+        beforeTotalPrice,
+        membershipDiscount
+      );
+
+      stockManager.deduction(items);
+
+      const re = await InputView.getRePurchase();
+      if (re === 'N') return;
     }
   }
 

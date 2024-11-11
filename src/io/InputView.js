@@ -87,6 +87,12 @@ const InputView = {
     if (!ANSWER_REGEX.test(answer))
       throw new Error('[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.');
   },
+
+  async getRePurchase() {
+    return await MissionUtils.Console.readLineAsync(
+      '감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n'
+    );
+  },
 };
 
 export default InputView;

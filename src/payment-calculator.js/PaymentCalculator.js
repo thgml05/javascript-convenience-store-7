@@ -1,11 +1,4 @@
-class PaymentCalculator {
-  constructor(items) {
-    this.realQuantity = this.getRealQuantity(items);
-    this.promotionDiscount = this.getPromotionDiscount(items);
-    this.beforeTotalPrice = this.getBeforePromotionTotalPrice(items);
-    this.normalProductTotalPrice = this.getNormalProductTotalPrice(items);
-  }
-
+const PaymentCalculator = {
   getRealQuantity(items) {
     let realQuantity = 0;
 
@@ -13,7 +6,7 @@ class PaymentCalculator {
       realQuantity += item.quantity;
     }
     return realQuantity;
-  }
+  },
 
   getPromotionDiscount(items) {
     let promotionDiscount = 0;
@@ -21,7 +14,7 @@ class PaymentCalculator {
       promotionDiscount += item.promotionQuantity * item.price;
     }
     return promotionDiscount;
-  }
+  },
 
   getBeforePromotionTotalPrice(items) {
     let price = 0;
@@ -29,7 +22,7 @@ class PaymentCalculator {
       price += item.quantity * item.price;
     }
     return price;
-  }
+  },
 
   getNormalProductTotalPrice(items) {
     let price = 0;
@@ -39,7 +32,7 @@ class PaymentCalculator {
       }
     }
     return price;
-  }
-}
+  },
+};
 
 export default PaymentCalculator;

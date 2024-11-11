@@ -66,6 +66,26 @@ class StockManager {
     }
     return updatedItems;
   }
+
+  deduction(items) {
+    for (const item of items) {
+      const promotionProduct = this.#products.find(
+        (product) => product.name === item.name && product.promotion !== null
+      );
+      const normalProduct = this.#products.find(
+        (product) => product.name === item.name && product.promotion === null
+      );
+      if (promotionProduct === undefined)
+        normalProduct.quantity -= item.quantity;
+      else if (promotionProduct.quantity < item.quantity) {
+        const remain = item.quantity - promotionProduct.quantity;
+        promotionProduct.quantity = 0;
+        normalProduct.quantity -= remain;
+      } else {
+        promotionProduct.quantity -= item.quantity;
+      }
+    }
+  }
 }
 
 export default StockManager;
