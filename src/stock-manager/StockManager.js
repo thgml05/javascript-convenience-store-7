@@ -1,7 +1,11 @@
 import FileHandler from '../file-handler/FileHandler.js';
 
 class StockManager {
-  #products = [];
+  #products;
+
+  constructor() {
+    this.#products = [];
+  }
 
   async loadProducts() {
     this.#products = await FileHandler.fileToObj('products.md');
@@ -44,6 +48,12 @@ class StockManager {
     });
 
     return normalQuantity + promotionQuantity;
+  }
+
+  getPromotionProduct(item) {
+    return this.#products.find(
+      (product) => product.name === item.name && product.promotion
+    );
   }
 
   addPriceToItems(items) {
